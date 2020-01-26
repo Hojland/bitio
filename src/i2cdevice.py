@@ -1,6 +1,8 @@
 from collections import namedtuple
 import microbit
 import re
+from codecs import encode
+
 
 __version__ = '0.0.6'
 
@@ -69,11 +71,12 @@ class MockSMBus:
     #    return self.regs[register:register + length]
 
     def read_i2c_block_data(self, i2c_address, register, length=1):
+        
         microbit.cmd(f"i2c.write({i2c_address}, {bytes([register])}, repeat=True)")
         read = microbit.cmd(f"print(i2c.read({i2c_address}, {length}))")
         read = re.sub(r'("|\')$', '', read)
         read = re.sub(r'^b("|\')', '', read)
-        read = read.encode().decode('unicode-escape').encode()
+        read = encode(read.encode().decode('unicode_escape'), 'raw_unicode_escape')
         return read
 
     def write_i2c_block_data(self, i2c_address, register, values):
