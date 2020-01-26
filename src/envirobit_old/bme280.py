@@ -126,8 +126,6 @@ class bme280():
         self._pressure = press / 100.0
         self._humidity = h
         self._altitude = 44330.0 * (1.0 - pow(self._pressure / self._qnh, (1.0/5.255)))
-
-bmp280 = bme280
         
 if __name__ == "__main__":
     b = bme280()
